@@ -1,0 +1,33 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "cppbuild",
+			"label": "C/C++: g++.exe сборка активного файла",
+			"command": "D:\\program\\codeblock\\CodeBlocks-EP\\CodeBlocks-EP\\MinGW\bin\\g++.exe",
+			"args": [
+				"-fdiagnostics-color=always",
+				"-g",
+				"${file}",
+				"-I",
+				"D:\\program\\codeblock\\CodeBlocks-EP\\CodeBlocks-EP\\MinGW\\include",
+				"-L",
+				"D:\\program\\codeblock\\CodeBlocks-EP\\CodeBlocks-EP\\MinGW\\lib",
+				"-o",
+				"${fileDirname}\\${fileBasenameNoExtension}.exe",
+				"-lbgi", "-lgdi32", "-lcomdlg32", "-luuid", "-loleaut32", "-lole32"
+			],
+			"options": {
+				"cwd": "${fileDirname}"
+			},
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"detail": "компилятор: D:\\program\\mingv\\mingw64\\bin\\g++.exe"
+		}
+	]
+}
