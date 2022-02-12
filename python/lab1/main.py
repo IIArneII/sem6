@@ -57,7 +57,7 @@ if __name__ == '__main__':
                 size = normal_size(os.path.getsize(f))
                 print(f, '-', size[0], size[1])
     if task == 2:
-        with ZipFile('sem.zip') as z:
+        with ZipFile('task2.zip') as z:
             for f in z.infolist():
                 path = os.path.split(f.filename)
                 if not path[1]:
@@ -85,26 +85,3 @@ if __name__ == '__main__':
         schedule.every().second.do(ku_pro, msg='Привет ', time='20-02')
         while True:
             schedule.run_pending()
-
-# # m = [0, 1, 0, 1, 0, 0, 1, 0, 0]
-# # a = 0
-# # b = 1
-# # for i in m:
-# #     if i == 0:
-# #         b -= (b - a) / 2.
-# #     else:
-# #         a += (b - a) / 2.
-# # print(a, b)
-# n = 4
-# a = 0.32482771
-#
-# for i in range(0, 500):
-#     a = float('0.' + str(a ** 2)[n: 3 * n])
-#     print(a)
-#     plt.plot(a, i, '.')
-# plt.show()
-#
-# # a *= a
-# # a *= str(a * 1000)
-# # a = int(a[n: n * 3]) / (n * 2)
-# # print(a)
