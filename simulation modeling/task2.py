@@ -56,6 +56,11 @@ if __name__ == '__main__':
     series = [1 if i >= m else 0 for i in xi]
     S = sum([1 if series[i] != series[i - 1] else 0 for i in range(1, len(series))]) + 1
 
+    r = sum([(i + 1) * xi[i] for i in range(len(xi))]) / n - sum(xi) / n * (n + 1) / 2
+    r /= math.sqrt((sum([i ** 2 for i in xi]) / n - (sum(xi) / n) ** 2) * (n ** 2 - 1) / 12)
+
+    r_ = (1 - r ** 2) / math.sqrt(n)
+
     print('Интервалы:', intervals)
     print('Частоты:', ni)
     print('Сумма частот:', sum(ni))
@@ -69,6 +74,10 @@ if __name__ == '__main__':
     print('Теоритические частоты:', ni_)
     print('X^2:', X2)
     print('Количество серий S:', S)
+    print('Коэффициент корреляции r:', r)
+    print('Фигня после коэффициента r:', r_)
+    print('Верхняя граница r_max при a = 0.99:', r_ * 0.01)
+    print('Верхняя граница r_max при a = 0.01:', r_ * 2.34)
 
 
 
