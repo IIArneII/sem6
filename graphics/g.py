@@ -21,6 +21,7 @@ class Window:
                 self.running = False
 
     def update(self):
+        pass
         self.sprites.update()
 
     def rendering(self):
@@ -35,7 +36,6 @@ class Window:
             y = int(-30 * math.sin(x / 30) + self.height / 2)
             self.screen.set_at((i, y), (255, 255, 255))
 
-        self.sprites.draw(self.screen)
         pygame.display.flip()
 
     def run(self):
