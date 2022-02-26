@@ -16,7 +16,6 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
     try:
-        lines = format_text_block(args.frame_width, args.frame_height, args.file)
-        print(lines)
+        print(format_text_block(args.frame_width, args.frame_height, args.file))
     except Exception as e:
         print(e)

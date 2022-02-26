@@ -1,5 +1,20 @@
+from typing import Any, List, Optional, Sequence, Text, Tuple, Union, overload, Iterable
 import pygame
+from pygame import draw
 import math
+
+
+_ColorInput = Union[
+    pygame.color.Color, str, List[int], Tuple[int, int, int], Tuple[int, int, int, int]
+]
+
+
+class Screen:
+    def __init__(self, width=500, height=500):
+        self.screen = pygame.display.set_mode((width, height))
+
+    def set_at(self, x_y: Sequence[int], color: _ColorInput):
+        self.screen.set_at(x_y, color)
 
 
 class Window:
@@ -26,6 +41,9 @@ class Window:
 
     def rendering(self):
         self.screen.fill((150, 200, 200))
+
+        draw.line(self.screen, (100, 0, 100), (20, 10), (40, 200))
+        draw.aaline(self.screen, (100, 0, 100), (10, 10), (20, 200))
 
         for i in range(self.height):
             self.screen.set_at((int(self.width / 2), i), 0)

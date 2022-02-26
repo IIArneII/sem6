@@ -12,7 +12,6 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
     if os.path.isfile(args.source):
-        print('True:', os.path.isfile(args.source))
         with open(args.source, 'r') as f1:
             with open(args.target, 'w') as f2:
                 lines = f1.readlines()

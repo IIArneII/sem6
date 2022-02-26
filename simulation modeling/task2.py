@@ -9,8 +9,9 @@ M = 1000
 
 def rand():
     global x
+    t = x
     x = (a * x + b) % M
-    return x / M
+    return t / M
 
 
 if __name__ == '__main__':
@@ -47,14 +48,14 @@ if __name__ == '__main__':
     b = x_m + math.sqrt(3) * o
     f = 1 / (b - a)
 
-    ni_[0] = len(ni) * ((intervals[0] + intervals[1]) / 2 - a) / (b - a)
+    ni_[0] = n * ((intervals[0] + intervals[1]) / 2 - a) / (b - a)
     for i in range(1, len(ni_) - 1):
-        ni_[i] = len(ni) * ((intervals[i] + intervals[i + 1]) / 2 - (intervals[i - 1] + intervals[i]) / 2) / (b - a)
-    ni_[-1] = len(ni) * (b - (intervals[-2] + intervals[-1]) / 2) / (b - a)
+        ni_[i] = n * ((intervals[i] + intervals[i + 1]) / 2 - (intervals[i - 1] + intervals[i]) / 2) / (b - a)
+    ni_[-1] = n * (b - (intervals[-2] + intervals[-1]) / 2) / (b - a)
 
-    print(f'-----{b} - {(intervals[-2] + intervals[-1]) / 2} = {b - (intervals[-2] + intervals[-1]) / 2}')
+    # print(f'-----{b} - {(intervals[-2] + intervals[-1]) / 2} = {b - (intervals[-2] + intervals[-1]) / 2}')
 
-    X2 = sum([((ni[i] - ni_[i]) ** 2) / ni_[i] for i in range(len(ni))])
+    X2 = sum([((ni[i] - ni_[i]) ** 2) / ni_[i] for i in range(len(ni) - 3)])
 
     series = [1 if i >= m else 0 for i in xi]
     S = sum([1 if series[i] != series[i - 1] else 0 for i in range(1, len(series))]) + 1
@@ -79,12 +80,12 @@ if __name__ == '__main__':
     print('b*:', b)
     print('Плотность вероятности:', f)
     print('Теоритические частоты:', ni_)
-    print('X^2:', X2)
+    print('X^2:', X2, "< 11.1")
     print(f'Количество серий S: 42 < {S} < 59')
     print('Коэффициент корреляции r:', r)
     print('r_max:', r_)
-    print('Верхняя граница r_max при a = 0.99:', r_ * 0.01)
-    print('Верхняя граница r_max при a = 0.01:', r_ * 2.34)
+    print('Верхняя граница r_max при a = 0.95:', r_ * 0.06)
+    print('Верхняя граница r_max при a = 0.05:', r_ * 1.96)
 
 
 
