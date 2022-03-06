@@ -49,6 +49,11 @@ class Window:
             self.section = matrix.rotation_2r(self.section)
         if pygame.key.get_pressed()[pygame.K_LEFT]:
             self.section = matrix.rotation_2l(self.section)
+        if pygame.key.get_pressed()[pygame.K_s]:
+            print(self.section)
+            self.section = matrix.scaling_2(self.section, 1.01, 1.01)
+            print(self.section)
+            print()
 
     def update(self):
         pass
@@ -75,4 +80,5 @@ class Window:
 
 if __name__ == '__main__':
     w = Window()
+    w.FPS_limitation = 30
     w.run()
