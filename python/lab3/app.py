@@ -35,12 +35,12 @@ def image_mars():
     return f"""<!doctype html>
     <html>
         <head>
-            <link rel="stylesheet" type="text/css" href="{url_for('static', filename='stylesheet/stylesheet.css')}"/>
+            <link rel="stylesheet" type="text/css" href="{url_for('stati', filename='stylesheet/stylesheet.css')}"/>
             <title>Привет, Марс!</title>
         </head>
         <body>
             <h1>Жди нас, Марс!</h1>
-            <img src="{url_for('static', filename='img/mars.jpg')}" alt="Картинка Марса не нашлась">
+            <img src="{url_for('stati', filename='img/mars.jpg')}" alt="Картинка Марса не нашлась">
         </body>
     <html>
     """
@@ -67,7 +67,7 @@ def results(nickname, level, rating):
 def photo(nickname):
     if request.method == 'POST':
         f = request.files['file']
-        f.save(f'./static/img/{nickname}.png')
+        f.save(f'./stati/img/{nickname}.png')
         return 'Фото отправлено'
     if request.method == 'GET':
         return f"""<!DOCTYPE html>
@@ -78,7 +78,7 @@ def photo(nickname):
                             </title>
                         </head>
                         <body>
-                            <img src="{url_for('static', filename=f'img/{nickname}.png')}">
+                            <img src="{url_for('stati', filename=f'img/{nickname}.png')}">
                             <form name="form" method="post" enctype="multipart/form-data">
                                 <div>
                                     <input type="file" id="file" name="file">

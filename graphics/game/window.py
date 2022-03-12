@@ -1,7 +1,7 @@
 import pygame
 from pygame import draw
 import math
-from draw import axes
+from draw import axes, line
 import matrix
 import numpy as np
 
@@ -34,13 +34,13 @@ class Window:
                 else:
                     self.setting = True
                     self.section[1][0] = e.pos[0] - int(self.screen.get_width() / 2)
-                    self.section[1][1] = e.pos[1] - int(self.screen.get_height() / 2)
+                    self.section[1][1] = -(e.pos[1] - int(self.screen.get_height() / 2))
                     self.section[0][0] = e.pos[0] - int(self.screen.get_width() / 2)
-                    self.section[0][1] = e.pos[1] - int(self.screen.get_height() / 2)
+                    self.section[0][1] = -(e.pos[1] - int(self.screen.get_height() / 2))
             elif e.type == pygame.MOUSEMOTION:
                 if self.setting:
                     self.section[1][0] = e.pos[0] - int(self.screen.get_width() / 2)
-                    self.section[1][1] = e.pos[1] - int(self.screen.get_height() / 2)
+                    self.section[1][1] = -(e.pos[1] - int(self.screen.get_height() / 2))
             elif e.type == pygame.KEYDOWN:
                 if e.key == pygame.K_SPACE:
                     self.section = matrix.reflect_2x(self.section)
@@ -49,11 +49,16 @@ class Window:
             self.section = matrix.rotation_2r(self.section)
         if pygame.key.get_pressed()[pygame.K_LEFT]:
             self.section = matrix.rotation_2l(self.section)
+        if pygame.key.get_pressed()[pygame.K_m]:
+            self.section = matrix.scaling_2(self.section, 1.1, 1.1)
+        if pygame.key.get_pressed()[pygame.K_w]:
+            self.section = matrix.shift_2(self.section, 0, 1)
         if pygame.key.get_pressed()[pygame.K_s]:
-            print(self.section)
-            self.section = matrix.scaling_2(self.section, 1.01, 1.01)
-            print(self.section)
-            print()
+            self.section = matrix.shift_2(self.section, 0, -1)
+        if pygame.key.get_pressed()[pygame.K_d]:
+            self.section = matrix.shift_2(self.section, 1, 0)
+        if pygame.key.get_pressed()[pygame.K_a]:
+            self.section = matrix.shift_2(self.section, -1, 0)
 
     def update(self):
         pass
@@ -61,10 +66,10 @@ class Window:
     def rendering(self):
         self.screen.fill((150, 200, 200))
         axes(self.screen, (0, 0, 0))
-        draw.aaline(self.screen, (0, 0, 0), (self.section[0][0] + int(self.screen.get_width() / 2),
-                                             self.section[0][1] + int(self.screen.get_height() / 2)),
+        line(self.screen, (0, 0, 0), (self.section[0][0] + int(self.screen.get_width() / 2),
+                                             -self.section[0][1] + int(self.screen.get_height() / 2)),
                                             (self.section[1][0] + int(self.screen.get_width() / 2),
-                                             self.section[1][1] + int(self.screen.get_height() / 2)))
+                                             -self.section[1][1] + int(self.screen.get_height() / 2)))
         pygame.display.flip()
 
     def run(self):

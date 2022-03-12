@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+
+{% block content %}
+    {% for member in crew %}
+        <p>{{ member.first_name }} {{ member.last_name }} - Каюта №{{ loop.index }}{% if loop.first %} - Капитан корабля {% endif %}</p>
+    {% endfor %}
+{% endblock %}

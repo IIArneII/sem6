@@ -1,0 +1,91 @@
+{
+  "crew": [
+    {
+      "first_name": "София",
+      "last_name": "Кривоносова",
+      "photo": "sofa.png",
+      "specialty": [
+        "Астрогеолог",
+        "Пилот"
+      ]
+    },
+    {
+      "first_name": "Рудольф",
+      "last_name": "Бауэр",
+      "photo": "ba.png",
+      "specialty": [
+        "Киберинженер",
+        "Метеоролог"
+      ]
+    },
+    {
+      "first_name": "Арсений",
+      "last_name": "Калинько",
+      "photo": "arsenii.png",
+      "specialty": [
+        "Политик",
+        "Врач",
+        "Пилот"
+      ]
+    },
+    {
+      "first_name": "Роман",
+      "last_name": "Сулиман",
+      "photo": "sul.png",
+      "specialty": [
+        "Оператор марсохода"
+      ]
+    },
+    {
+      "first_name": "Арсений",
+      "last_name": "Шванев",
+      "photo": "arne.png",
+      "specialty": [
+        "Экзобиолог",
+        "Врач"
+      ]
+    },
+    {
+      "first_name": "Максим",
+      "last_name": "Айкин",
+      "photo": "max.png",
+      "specialty": [
+        "Инженер жизнеобеспечения"
+      ]
+    },
+    {
+      "first_name": "Ариес",
+      "last_name": "Спринг",
+      "photo": "ar.png",
+      "specialty": [
+        "Инженер по терраформированию"
+      ]
+    },
+    {
+      "first_name": "Каната",
+      "last_name": "Хосидзима",
+      "photo": "kanata.png",
+      "specialty": [
+        "Пилот",
+        "Инженер-исследователь"
+      ]
+    },
+    {
+      "first_name": "Зак",
+      "last_name": "Уолкер",
+      "photo": "zak.png",
+      "specialty": [
+        "Гляциолог",
+        "Врач"
+      ]
+    },
+    {
+      "first_name": "Квитерия",
+      "last_name": "Раффаэли",
+      "photo": "kvi.png",
+      "specialty": [
+        "Метеоролог"
+      ]
+    }
+  ]
+}

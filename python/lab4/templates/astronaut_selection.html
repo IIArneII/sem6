@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <form name="form" method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            {{ form.last_name.label }}<br>
+            {{ form.last_name() }}<br>
+        </div>
+        <div class="form-group">
+            {{ form.first_name.label }}<br>
+            {{ form.first_name() }}<br>
+        </div>
+        <div class="form-group">
+            {{ form.email.label }}<br>
+            {{ form.email() }}<br>
+        </div>
+        <div class="form-group">
+            {{ form.education.label }}<br>
+            {{ form.education() }}<br>
+        </div>
+        <div class="form-group">
+            {{ form.profession.label }}<br>
+            {{ form.profession() }}<br>
+        </div>
+        <div class="form-group">
+            {{ form.sex.label }}<br>
+            {{ form.sex() }}<br>
+        </div>
+        <div class="form-group">
+            {{ form.motivation.label }}<br>
+            {{ form.motivation() }}<br>
+        </div>
+        <div class="form-group">
+            {{ form.stay.label }}<br>
+            {{ form.stay() }}<br>
+        </div>
+        <div class="form-group">
+            {{ form.photo.label }}<br>
+            {{ form.photo() }}<br>
+        </div>
+        <div class="form-group">
+            {{ form.submit(type="submit") }}
+        </div>
+    </form>
+{% endblock %}
