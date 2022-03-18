@@ -1,9 +1,9 @@
 import pygame
-from pygame import draw
 import math
-from draw import axes, line
+import draw
 import matrix
 import numpy as np
+import figure2
 
 
 class Window:
@@ -20,6 +20,7 @@ class Window:
         pygame.display.set_caption(title)
 
         self.section = np.array([[0, 0, 1], [0, 0, 1]])
+        self.f = figure2.Figure2([20, 20], [30, 60], [100, 100])
         self.setting = False
 
     def event_handling(self):
@@ -47,8 +48,10 @@ class Window:
 
         if pygame.key.get_pressed()[pygame.K_RIGHT]:
             self.section = matrix.rotation_2r(self.section)
+            self.f.rotation(-1)
         if pygame.key.get_pressed()[pygame.K_LEFT]:
             self.section = matrix.rotation_2l(self.section)
+            self.f.rotation(1)
         if pygame.key.get_pressed()[pygame.K_m]:
             self.section = matrix.scaling_2(self.section, 1.1, 1.1)
         if pygame.key.get_pressed()[pygame.K_w]:
@@ -65,11 +68,12 @@ class Window:
 
     def rendering(self):
         self.screen.fill((150, 200, 200))
-        axes(self.screen, (0, 0, 0))
-        line(self.screen, (0, 0, 0), (self.section[0][0] + int(self.screen.get_width() / 2),
-                                             -self.section[0][1] + int(self.screen.get_height() / 2)),
-                                            (self.section[1][0] + int(self.screen.get_width() / 2),
-                                             -self.section[1][1] + int(self.screen.get_height() / 2)))
+        draw.axes(self.screen, (0, 0, 0))
+
+        f = figure2.Figure2(*self.section, (20, 20, 1))
+
+        draw.draw_figure(self.screen, f)
+
         pygame.display.flip()
 
     def run(self):
