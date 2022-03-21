@@ -20,8 +20,9 @@ class Window:
         pygame.display.set_caption(title)
 
         self.section = np.array([[0, 0, 1], [0, 0, 1]])
-        self.f = figure2.Figure2([20, 20], [30, 60], [100, 100])
         self.setting = False
+
+        self.f = figure2.Figure2((20, 20), (100, 50), (-30, -40))
 
     def event_handling(self):
         for e in pygame.event.get():
@@ -48,10 +49,9 @@ class Window:
 
         if pygame.key.get_pressed()[pygame.K_RIGHT]:
             self.section = matrix.rotation_2r(self.section)
-            self.f.rotation(-1)
+            self.f.rotation(1)
         if pygame.key.get_pressed()[pygame.K_LEFT]:
             self.section = matrix.rotation_2l(self.section)
-            self.f.rotation(1)
         if pygame.key.get_pressed()[pygame.K_m]:
             self.section = matrix.scaling_2(self.section, 1.1, 1.1)
         if pygame.key.get_pressed()[pygame.K_w]:
@@ -70,9 +70,7 @@ class Window:
         self.screen.fill((150, 200, 200))
         draw.axes(self.screen, (0, 0, 0))
 
-        f = figure2.Figure2(*self.section, (20, 20, 1))
-
-        draw.draw_figure(self.screen, f)
+        draw.draw_figure(self.screen, self.f)
 
         pygame.display.flip()
 
@@ -87,7 +85,29 @@ class Window:
             self.rendering()
 
 
+from matplotlib import pyplot as plt
+
+
+def line(start, end, color=(0, 0, 0)):
+    y = int(start[1])
+    dx = int(end[0]) - int(start[0])
+    dy = int(end[1]) - int(start[1])
+    d = 0
+    if dx < 0:
+        dx *= -1
+    for x in range(int(start[0]), int(end[0]) + 1):
+        d += 2 * dy
+        if d > dx:
+            y += 1
+            d -= 2 * dx
+        print(x, y)
+        plt.plot(x, -y, 'o')
+
+
 if __name__ == '__main__':
     w = Window()
-    w.FPS_limitation = 30
+    w.FPS_limitation = 120
     w.run()
+    # line((1, 1), (6, 3))
+    # plt.show()
+

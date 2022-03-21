@@ -21,13 +21,43 @@ def line_f(surface: Surface, start, end, color=(0, 0, 0)):
 
 
 def line(surface: Surface, start, end, color=(0, 0, 0)):
-    y = start[0]
-    dx = end[0] - start[0]
-    dy = end[1] - start[1]
-    k = dy / dx
-    for x in range(int(start[0]), int(end[0])):
-        surface.set_at((x, int(y)), color)
-        y += k
+    st = int(start[0]), int(start[1])
+    en = int(end[0]), int(end[1])
+
+    if st[0] > en[0]:
+        st, en = en, st
+
+    dx = en[0] - st[0]
+    dy = en[1] - st[1]
+    d = 0
+    add = 1
+    if np.abs(dy) < np.abs(dx):
+        if dy < 0:
+            add = -1
+            dy *= -1
+        y = st[1]
+        for x in range(st[0], en[0]):
+            surface.set_at((x, y), color)
+            d += 2 * dy
+            if d > dx:
+                y += add
+                d -= 2 * dx
+    else:
+        x = int(st[0])
+        if dy > 0:
+            for y in range(st[1], en[1], 1):
+                surface.set_at((x, y), color)
+                d += 2 * dx
+                if d > dy:
+                    x += add
+                    d -= 2 * dy
+        else:
+            for y in range(st[1], en[1], -1):
+                surface.set_at((x, y), color)
+                d -= 2 * dx
+                if d < dy:
+                    x += add
+                    d -= 2 * dy
 
 
 def draw_points(surface: Surface, f: Figure2, color=(0, 0, 0), coord_transform=True):
