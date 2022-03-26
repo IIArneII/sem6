@@ -4,7 +4,7 @@ from pygame import Surface
 import numpy as np
 
 
-def axes(surface: Surface, color) -> None:
+def axes(surface: Surface, color):
     x = int(surface.get_width() / 2)
     y = int(surface.get_height() / 2)
     draw.aaline(surface, color, (x, 0), (x, surface.get_height()))
@@ -36,6 +36,7 @@ def line(surface: Surface, start, end, color=(0, 0, 0)):
             add = -1
             dy *= -1
         y = st[1]
+        print('\r' * 10, 'dx:', np.sign(dx), 'dy:', np.sign(dy), 'add:', add, end='')
         for x in range(st[0], en[0]):
             surface.set_at((x, y), color)
             d += 2 * dy
@@ -43,8 +44,9 @@ def line(surface: Surface, start, end, color=(0, 0, 0)):
                 y += add
                 d -= 2 * dx
     else:
-        x = int(st[0])
+        x = st[0]
         if dy > 0:
+            print('\r' * 10, 'dx:', np.sign(dx), 'dy:', np.sign(dy), 'add:', add, end='')
             for y in range(st[1], en[1], 1):
                 surface.set_at((x, y), color)
                 d += 2 * dx
@@ -52,6 +54,7 @@ def line(surface: Surface, start, end, color=(0, 0, 0)):
                     x += add
                     d -= 2 * dy
         else:
+            print('\r' * 10, 'dx:', np.sign(dx), 'dy:', np.sign(dy), 'add:', add, end='')
             for y in range(st[1], en[1], -1):
                 surface.set_at((x, y), color)
                 d -= 2 * dx

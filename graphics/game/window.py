@@ -19,10 +19,8 @@ class Window:
         self.sprites = pygame.sprite.Group()
         pygame.display.set_caption(title)
 
-        self.section = np.array([[0, 0, 1], [0, 0, 1]])
         self.setting = False
-
-        self.f = figure2.Figure2((20, 20), (100, 50), (-30, -40))
+        self.f = figure2.Figure2([0, 0, 1], [0, 0, 1])
 
     def event_handling(self):
         for e in pygame.event.get():
@@ -35,33 +33,34 @@ class Window:
                     self.setting = False
                 else:
                     self.setting = True
-                    self.section[1][0] = e.pos[0] - int(self.screen.get_width() / 2)
-                    self.section[1][1] = -(e.pos[1] - int(self.screen.get_height() / 2))
-                    self.section[0][0] = e.pos[0] - int(self.screen.get_width() / 2)
-                    self.section[0][1] = -(e.pos[1] - int(self.screen.get_height() / 2))
+                    self.f.points[1][0] = e.pos[0] - int(self.screen.get_width() / 2)
+                    self.f.points[1][1] = -(e.pos[1] - int(self.screen.get_height() / 2))
+                    self.f.points[0][0] = e.pos[0] - int(self.screen.get_width() / 2)
+                    self.f.points[0][1] = -(e.pos[1] - int(self.screen.get_height() / 2))
             elif e.type == pygame.MOUSEMOTION:
                 if self.setting:
-                    self.section[1][0] = e.pos[0] - int(self.screen.get_width() / 2)
-                    self.section[1][1] = -(e.pos[1] - int(self.screen.get_height() / 2))
+                    self.f.points[1][0] = e.pos[0] - int(self.screen.get_width() / 2)
+                    self.f.points[1][1] = -(e.pos[1] - int(self.screen.get_height() / 2))
             elif e.type == pygame.KEYDOWN:
                 if e.key == pygame.K_SPACE:
-                    self.section = matrix.reflect_2x(self.section)
+                    self.f.points = matrix.reflect_2x(self.f.points)
 
         if pygame.key.get_pressed()[pygame.K_RIGHT]:
-            self.section = matrix.rotation_2r(self.section)
-            self.f.rotation(1)
+            self.f.rotation(-1)
         if pygame.key.get_pressed()[pygame.K_LEFT]:
-            self.section = matrix.rotation_2l(self.section)
-        if pygame.key.get_pressed()[pygame.K_m]:
-            self.section = matrix.scaling_2(self.section, 1.1, 1.1)
+            self.f.rotation(1)
+        if pygame.key.get_pressed()[pygame.K_UP]:
+            self.f.scaling(1.1, 1.1)
+        if pygame.key.get_pressed()[pygame.K_DOWN]:
+            self.f.scaling(0.9, 0.9)
         if pygame.key.get_pressed()[pygame.K_w]:
-            self.section = matrix.shift_2(self.section, 0, 1)
+            self.f.shift(0, 1)
         if pygame.key.get_pressed()[pygame.K_s]:
-            self.section = matrix.shift_2(self.section, 0, -1)
+            self.f.shift(0, -1)
         if pygame.key.get_pressed()[pygame.K_d]:
-            self.section = matrix.shift_2(self.section, 1, 0)
+            self.f.shift(1, 0)
         if pygame.key.get_pressed()[pygame.K_a]:
-            self.section = matrix.shift_2(self.section, -1, 0)
+            self.f.shift(-1, 0)
 
     def update(self):
         pass
@@ -108,6 +107,3 @@ if __name__ == '__main__':
     w = Window()
     w.FPS_limitation = 120
     w.run()
-    # line((1, 1), (6, 3))
-    # plt.show()
-

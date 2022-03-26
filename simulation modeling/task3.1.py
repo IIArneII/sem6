@@ -45,6 +45,15 @@ if __name__ == '__main__':
     P = [math.exp(-l * intervals[i]) - math.exp(-l * intervals[i + 1]) for i in range(len(ni) - 1)]
     ni_ = [i * n for i in P]
 
+    for i in range(len(ni)):
+        if ni[i] < 5:
+            for j in range(i + 1, len(ni)):
+                ni[i] += ni[j]
+                ni_[i] += ni[j]
+            del ni[i + 1: len(ni)]
+            del ni_[i + 1: len(ni_)]
+            break
+
     X2 = sum([((ni[i] - ni_[i]) ** 2) / ni_[i] for i in range(len(ni) - 3)])
 
     print('Теоритическое мат ожидание:', m_t)
@@ -61,4 +70,4 @@ if __name__ == '__main__':
     print('Частоты:', ni)
     print('Выборочное среднее через интервалы:', x_m)
     print('Теоритические частоты:', ni_)
-    print('\nX^2:', X2, "< 12.6")
+    print('\nX^2:', X2, "< 7.8")

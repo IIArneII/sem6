@@ -1,5 +1,5 @@
 import numpy as np
-from matrix import rad
+from matrix import rad, scaling_2, rotation_2, shift_2
 
 
 class Figure2:
@@ -10,9 +10,14 @@ class Figure2:
         if self.points.shape[1] == 2:
             self.points = np.c_[self.points, np.ones(len(self.points))]
 
-    def rotation(self, angle):
-        r = angle * rad
-        self.points = self.points.dot(np.array([[np.cos(r), np.sin(r), 0], [-np.sin(r), np.cos(r), 0], [0, 0, 1]]))
+    def rotation(self, angle: float):
+        self.points = rotation_2(self.points, angle)
+
+    def scaling(self, x: float, y: float):
+        self.points = scaling_2(self.points, x, y)
+
+    def shift(self, x: float, y: float):
+        self.points = shift_2(self.points, x, y)
 
     def mean(self):
         return self.points.sum(axis=0) / len(self.points)
