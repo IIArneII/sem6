@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div align="center">
+        <h2>Список задач</h2>
+        {% for job in jobs %}
+
+        <h3>Задача {{ job.id }}</h3>
+        <table border="1" width="70%">
+            <col width="30%">
+            <col width="20%">
+            <col width="20%">
+            <col width="20%">
+            <col width="10%">
+            <tr>
+                <td>Описание</td>
+                <td>Руководитель</td>
+                <td>Продолжительность</td>
+                <td>Список участников</td>
+                <td>Статус</td>
+            </tr>
+            <tr>
+                <td>{{ job.description }}</td>
+                <td>{{ job.user.name }} {{ job.user.surname }}</td>
+                <td>{{ job.work_size }} час(ов)</td>
+                <td>
+                    {% for user in job.collaborators %}
+                        {{ user.id }}{% if not loop.last %}, {% endif %}
+                    {% endfor %}
+                </td>
+                <td>{% if job.is_finished %}Завершена {% else %}Не завершена {% endif %}</td>
+            </tr>
+        </table>
+        <br>
+        {% endfor %}
+    </div>
+{% endblock %}

@@ -1,9 +1,9 @@
 import pygame
-import math
 import draw
 import matrix
 import numpy as np
 import figure2
+import mesh
 
 
 class Window:
@@ -21,6 +21,12 @@ class Window:
 
         self.setting = False
         self.f = figure2.Figure2([0, 0, 1], [0, 0, 1])
+
+        self.m1 = mesh.Line((0., 0, 0), (50., 0, 0))
+        self.m2 = mesh.Line((0., 0, 0), (0., 50, 0))
+        self.m3 = mesh.Line((0., 0, 0), (0., 0, 50))
+        self.cube = mesh.Cube(200, 200, 200)
+        self.v = matrix.v(np.array([10, 10, 10]))
 
     def event_handling(self):
         for e in pygame.event.get():
@@ -47,14 +53,18 @@ class Window:
 
         if pygame.key.get_pressed()[pygame.K_RIGHT]:
             self.f.rotation(-1)
+            self.cube.rotation(0.2, 0, 0)
         if pygame.key.get_pressed()[pygame.K_LEFT]:
             self.f.rotation(1)
+            self.cube.rotation(0, 0.2, 0)
         if pygame.key.get_pressed()[pygame.K_UP]:
             self.f.scaling(1.1, 1.1)
+            self.cube.rotation(0, 0, 0.2)
         if pygame.key.get_pressed()[pygame.K_DOWN]:
             self.f.scaling(0.9, 0.9)
         if pygame.key.get_pressed()[pygame.K_w]:
-            self.f.shift(0, 1)
+            # self.f.shift(0, 1)
+            self.v = matrix.shift_3(self.v, 0.1, 0, 0)
         if pygame.key.get_pressed()[pygame.K_s]:
             self.f.shift(0, -1)
         if pygame.key.get_pressed()[pygame.K_d]:
@@ -66,10 +76,29 @@ class Window:
         pass
 
     def rendering(self):
-        self.screen.fill((150, 200, 200))
-        draw.axes(self.screen, (0, 0, 0))
+        self.screen.fill((100, 100, 100))
+        # draw.axes(self.screen, (0, 0, 0))
 
-        draw.draw_figure(self.screen, self.f)
+        # p1 = self.m1.points.dot(self.v)
+        # p2 = self.m2.points.dot(self.v)
+        # p3 = self.m3.points.dot(self.v)
+        # draw.line(self.screen, (p1[0][0], p1[0][1]), (p1[1][0], p1[1][1]))
+        # draw.line(self.screen, (p2[0][0], p2[0][1]), (p2[1][0], p2[1][1]))
+        # draw.line(self.screen, (p3[0][0], p3[0][1]), (p3[1][0], p3[1][1]))
+
+        draw.mesh(self.screen, self.m1, self.v, color=(255, 0, 0))
+        draw.mesh(self.screen, self.m2, self.v, color=(0, 255, 0))
+        draw.mesh(self.screen, self.m3, self.v, color=(0, 0, 255))
+        draw.mesh(self.screen, self.cube, self.v)
+
+        draw.ellipse(self.screen, (100, 100), 50)
+
+
+        # draw.figure(self.screen, self.f)
+
+        # draw.ellipse(self.screen, (150, 150), 50)
+
+
 
         pygame.display.flip()
 

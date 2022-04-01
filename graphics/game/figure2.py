@@ -1,5 +1,5 @@
 import numpy as np
-from matrix import rad, scaling_2, rotation_2, shift_2
+from matrix import scaling_2, rotation_2, shift_2
 
 
 class Figure2:

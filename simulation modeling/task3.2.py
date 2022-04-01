@@ -58,22 +58,49 @@ if __name__ == '__main__':
 
     ni_ = [ n * h / math.sqrt(d_o) * fi(((intervals[i - 1] + intervals[i]) / 2 - m_o) / math.sqrt(d_o)) for i in range(1, len(intervals))]
 
-    for i in range(2, len(ni)):
-        if ni[i] < 5:
-            for j in range(i + 1, len(ni)):
-                ni[i] += ni[j]
-                ni_[i] += ni[j]
-            del ni[i + 1: len(ni)]
-            del ni_[i + 1: len(ni_)]
+    o_ni = ni.copy()
+    o_ni_ = ni_.copy()
+    for i in range(2, len(o_ni)):
+        if o_ni[i] < 5:
+            for j in range(i + 1, len(o_ni)):
+                o_ni[i] += o_ni[j]
+                o_ni_[i] += o_ni_[j]
+            del o_ni[i + 1: len(o_ni)]
+            del o_ni_[i + 1: len(o_ni_)]
             break
 
+    o_ni[1] += o_ni[0]
+    o_ni_[1] += o_ni_[0]
+    del o_ni[0]
+    del o_ni_[0]
+
     print('\nИнтервалы:', intervals)
-    print('Количество интервалов:', len(ni))
-    print('Частоты:', ni)
-    print('Теоритические частоты:', ni_)
+    print('Количество интервалов:', len(o_ni))
+    print('Частоты:', o_ni)
+    print('Теоритические частоты:', o_ni_)
 
     X2 = sum([((ni[i] - ni_[i]) ** 2) / ni_[i] for i in range(len(ni) - 3)])
 
-    print('\nX^2:', X2, "< 7.8")
+    print('\nX^2:', X2, "< 6")
 
-    for i in range(len(xi))
+    n_ni = [sum(ni[0: i]) for i in range(1, len(ni) + 1)]
+
+    lap = lambda g: math.erf(g)
+    max = 0
+    print('\nСередины', '\t\t\tЧастоты', '\tНакопленные', '\tFn(x)', '\tF(x)', '\t\t\t\t|Fn(x) - F(x)|')
+    for i in range(len(ni)):
+        print((intervals[i] + intervals[i + 1]) / 2, end='\t')
+        print(ni[i], end='\t\t\t')
+        print(n_ni[i], end='\t\t\t\t')
+        print(n_ni[i] / n, end='\t')
+        if n_ni[i] / n == 1:
+            print(end='\t')
+        fx = 0.5 + lap((((intervals[i] + intervals[i + 1]) / 2) - m_o) / math.sqrt(d_o))
+        print(round(fx, 16), end='\t')
+        fx = math.fabs(n_ni[i] / n - fx)
+        print(fx)
+        if fx > max:
+            max = fx
+
+    print('\nМаксимальное расхождение:', max)
+    print('Лямбда:', max * math.sqrt(n), '> 1.36')
