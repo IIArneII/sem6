@@ -35,12 +35,12 @@ def image_mars():
     return f"""<!doctype html>
     <html>
         <head>
-            <link rel="stylesheet" type="text/css" href="{url_for('stati', filename='stylesheet/stylesheet.css')}"/>
+            <link rel="stylesheet" type="text/css" href="{url_for('static', filename='stylesheet/stylesheet.css')}"/>
             <title>Привет, Марс!</title>
         </head>
         <body>
             <h1>Жди нас, Марс!</h1>
-            <img src="{url_for('stati', filename='img/mars.jpg')}" alt="Картинка Марса не нашлась">
+            <img src="{url_for('static', filename='img/mars.jpg')}" alt="Картинка Марса не нашлась">
         </body>
     <html>
     """

@@ -1,17 +1,21 @@
 from sqlalchemy import Column, Integer, String, DateTime, Boolean, ForeignKey, Table
 from sqlalchemy import orm
+from flask_login import UserMixin
 import datetime
 from .db_session import SqlAlchemyBase
-
+from werkzeug.security import generate_password_hash, check_password_hash
 
 collaborations_table = Table('collaborations_list', SqlAlchemyBase.metadata,
                              Column('job_id', ForeignKey('job.id')),
                              Column('user_id', ForeignKey('user.id')))
 
-
 members_table = Table('members_list', SqlAlchemyBase.metadata,
                       Column('department_id', ForeignKey('department.id')),
                       Column('user_id', ForeignKey('user.id')))
+
+job_to_category = Table('job_to_category', SqlAlchemyBase.metadata,
+                        Column('job_id', ForeignKey('job.id')),
+                        Column('category_id', ForeignKey('category.id')))
 
 
 class Job(SqlAlchemyBase):
@@ -21,7 +25,10 @@ class Job(SqlAlchemyBase):
     team_leader = Column(Integer, ForeignKey('user.id'))
     description = Column(String)
     work_size = Column(Integer)
+
     collaborators = orm.relationship('User', secondary=collaborations_table, back_populates="job")
+    categories = orm.relationship('Category', secondary=job_to_category, back_populates="jobs")
+
     start_date = Column(DateTime)
     end_date = Column(DateTime)
     is_finished = Column(Boolean)
@@ -31,7 +38,7 @@ class Job(SqlAlchemyBase):
         return f'<Job> { {self.id} } { {self.description} }'
 
 
-class User(SqlAlchemyBase):
+class User(SqlAlchemyBase, UserMixin):
     __tablename__ = 'user'
 
     id = Column(Integer, primary_key=True, autoincrement=True, unique=True)
@@ -44,13 +51,21 @@ class User(SqlAlchemyBase):
     email = Column(String, nullable=False, unique=True)
     hashed_password = Column(String, nullable=False)
     modified_date = Column(DateTime, nullable=False, default=datetime.datetime.now())
+
     collaborators = orm.relationship('Job', secondary=collaborations_table, back_populates="user",
                                      overlaps="collaborators")
+
     job = orm.relation('Job', overlaps="user")
     department = orm.relation('Department', overlaps="user")
 
     def __repr__(self):
         return f'<Colonist> { {self.id} } { {self.surname} } { {self.name} }'
+
+    def set_password(self, password):
+        self.hashed_password = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.hashed_password, password)
 
 
 class Department(SqlAlchemyBase):
@@ -62,3 +77,11 @@ class Department(SqlAlchemyBase):
     members = orm.relationship('User', secondary=members_table, back_populates="department")
     email = Column(String, nullable=False)
     user = orm.relation('User')
+
+
+class Category(SqlAlchemyBase):
+    __tablename__ = 'category'
+
+    id = Column(Integer, primary_key=True, autoincrement=True, unique=True)
+    name = Column(String)
+    jobs = orm.relationship('Job', secondary=job_to_category, back_populates="categories",  overlaps="jobs")

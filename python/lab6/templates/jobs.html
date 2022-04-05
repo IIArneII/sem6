@@ -2,13 +2,16 @@
 
 {% block content %}
     <div align="center">
+        {% if current_user.is_authenticated %}
+        <a href="/new_job">Новая задача</a>
+        {% endif %}
         <h2>Список задач</h2>
         {% for job in jobs %}
-
         <h3>Задача {{ job.id }}</h3>
         <table border="1" width="70%">
-            <col width="30%">
             <col width="20%">
+            <col width="20%">
+            <col width="10%">
             <col width="20%">
             <col width="20%">
             <col width="10%">
@@ -16,6 +19,7 @@
                 <td>Описание</td>
                 <td>Руководитель</td>
                 <td>Продолжительность</td>
+                <td>Категории</td>
                 <td>Список участников</td>
                 <td>Статус</td>
             </tr>
@@ -24,14 +28,25 @@
                 <td>{{ job.user.name }} {{ job.user.surname }}</td>
                 <td>{{ job.work_size }} час(ов)</td>
                 <td>
+                    {% for cat in job.categories %}
+                        {{ cat.name }}{% if not loop.last %}<br> {% endif %}
+                    {% endfor %}
+                </td>
+                <td>
                     {% for user in job.collaborators %}
-                        {{ user.id }}{% if not loop.last %}, {% endif %}
+                        {{ user.email }}{% if not loop.last %}<br> {% endif %}
                     {% endfor %}
                 </td>
                 <td>{% if job.is_finished %}Завершена {% else %}Не завершена {% endif %}</td>
             </tr>
         </table>
         <br>
+        {% if (current_user.is_authenticated and job.id == current_user.id) or current_user.id == 1 %}
+        <div align="left">
+            <a href="/edit_job/{{ job.id }}">Изменить</a>
+            <a href="/del_job/{{ job.id }}">Удалить</a>
+        </div>
+        {% endif %}
         {% endfor %}
     </div>
 {% endblock %}

@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Новая задача</h1>
+<form method="post" enctype="multipart/form-data">
+    {{ form.hidden_tag() }}
+    <div class="">
+        {{ form.description.label }}<br>
+        {{ form.description(class="form-control") }}<br>
+    </div>
+    <div class="">
+        {{ form.work_size.label }}<br>
+        {{ form.work_size(class="form-control") }}<br>
+    </div>
+    <div class="">
+        {{ form.collaborators.label }}<br>
+        {{ form.collaborators(class="form-control") }}<br>
+    </div>
+    <div class="">
+        {{ form.categories.label }}<br>
+        {{ form.categories(class="form-control") }}<br>
+    </div>
+    <div class="">
+        {{ form.start_date.label }}<br>
+        {{ form.start_date(class="form-control") }}<br>
+    </div>
+    <div class="">
+        {{ form.end_date.label }}<br>
+        {{ form.end_date(class="form-control") }}<br>
+    </div>
+    <div class="">
+        {{ form.is_finished.label }}<br>
+        {{ form.is_finished(class="form-control") }}<br>
+    </div>
+    <div class="">
+        {{ form.submit(type="submit", class="btn btn-primary") }}
+    </div>
+    {{message}}
+</form>
+{% endblock %}

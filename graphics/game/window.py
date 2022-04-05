@@ -22,11 +22,11 @@ class Window:
         self.setting = False
         self.f = figure2.Figure2([0, 0, 1], [0, 0, 1])
 
-        self.m1 = mesh.Line((0., 0, 0), (50., 0, 0))
-        self.m2 = mesh.Line((0., 0, 0), (0., 50, 0))
-        self.m3 = mesh.Line((0., 0, 0), (0., 0, 50))
-        self.cube = mesh.Cube(200, 200, 200)
-        self.v = matrix.v(np.array([10, 10, 10]))
+        self.m1 = mesh.Line((0., 0, 0), (1., 0, 0))
+        self.m2 = mesh.Line((0., 0, 0), (0., 1, 0))
+        self.m3 = mesh.Line((0., 0, 0), (0., 0, 1))
+        self.cube = mesh.Cube(2, 2, 2)
+        self.v = matrix.v(np.array([3, 3, 3]))
 
     def event_handling(self):
         for e in pygame.event.get():
