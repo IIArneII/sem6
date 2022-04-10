@@ -18,13 +18,15 @@ def rand():
 
 if __name__ == '__main__':
     n = 100
-    xi = [[rand() for j in range(12)] for i in range(n)]
-    zi = [(sum(i) - 6) * 0.25 + 3 for i in xi]
+
+    xi = [[rand() + 0.001 for j in range(2)] for i in range(n)]
+
+    zi = [math.sqrt(-2 * math.log(i[0])) * math.cos(2 * math.pi * i[1]) * 0.25 + 3 for i in xi]
 
     m_o = sum(zi) / n
     d_o = sum([(i - m_o) ** 2 for i in zi]) / n
 
-    print('Матожидание:', m_o)
+    print('\nМатожидание:', m_o)
     print('Дисперсия:', d_o)
     print('Средне крадратическое отклонение', math.sqrt(d_o))
     print('Погрешность матожидания:', math.fabs(m_o - 3) / 3)
@@ -48,7 +50,8 @@ if __name__ == '__main__':
 
     fi = lambda x: 1 / math.sqrt(2 * math.pi) * math.exp(- (x ** 2) / 2)
 
-    ni_ = [n * h / math.sqrt(d_o) * fi(((intervals[i - 1] + intervals[i]) / 2 - m_o) / math.sqrt(d_o)) for i in range(1, len(intervals))]
+    ni_ = [n * h / math.sqrt(d_o) * fi(((intervals[i - 1] + intervals[i]) / 2 - m_o) / math.sqrt(d_o)) for i in
+           range(1, len(intervals))]
 
     o_ni = ni.copy()
     o_ni_ = ni_.copy()
@@ -81,7 +84,7 @@ if __name__ == '__main__':
 
     X2 = sum([((ni[i] - ni_[i]) ** 2) / ni_[i] for i in range(len(ni) - 3)])
 
-    print('\nX^2:', X2, "< 7.8")
+    print('\nX^2:', X2, "< 3.8")
 
     n_ni = [sum(ni[0: i]) for i in range(1, len(ni) + 1)]
 

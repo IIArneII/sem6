@@ -4,35 +4,35 @@
 <h1>Новая задача</h1>
 <form method="post" enctype="multipart/form-data">
     {{ form.hidden_tag() }}
-    <div class="">
+    <div class="form-group">
         {{ form.description.label }}<br>
         {{ form.description(class="form-control") }}<br>
     </div>
-    <div class="">
+    <div class="form-group">
         {{ form.work_size.label }}<br>
         {{ form.work_size(class="form-control") }}<br>
     </div>
-    <div class="">
+    <div class="form-group">
         {{ form.collaborators.label }}<br>
         {{ form.collaborators(class="form-control") }}<br>
     </div>
-    <div class="">
+    <div class="form-group">
         {{ form.categories.label }}<br>
         {{ form.categories(class="form-control") }}<br>
     </div>
-    <div class="">
+    <div class="form-group">
         {{ form.start_date.label }}<br>
         {{ form.start_date(class="form-control") }}<br>
     </div>
-    <div class="">
+    <div class="form-group">
         {{ form.end_date.label }}<br>
         {{ form.end_date(class="form-control") }}<br>
     </div>
-    <div class="">
+    <div class="form-group">
         {{ form.is_finished.label }}<br>
         {{ form.is_finished(class="form-control") }}<br>
     </div>
-    <div class="">
+    <div class="form-group">
         {{ form.submit(type="submit", class="btn btn-primary") }}
     </div>
     {{message}}

@@ -4,43 +4,43 @@
 <h1>Регистрация</h1>
 <form method="post">
     {{ form.hidden_tag() }}
-    <div class="">
+    <div class="form-group">
         {{ form.name.label }}<br>
         {{ form.name(class="form-control") }}<br>
     </div>
-    <div class="">
+    <div class="form-group">
         {{ form.surname.label }}<br>
         {{ form.surname(class="form-control") }}<br>
     </div>
-    <div class="">
+    <div class="form-group">
         {{ form.age.label }}<br>
         {{ form.age(class="form-control") }}<br>
     </div>
-    <p>
+    <div class="form-group">
         {{ form.position.label }}<br>
         {{ form.position(class="form-control") }}<br>
-    </p>
-    <div class="">
+    </div>
+    <div class="form-group">
         {{ form.speciality.label }}<br>
         {{ form.speciality(class="form-control") }}<br>
     </div>
-    <div class="">
+    <div class="form-group">
         {{ form.address.label }}<br>
         {{ form.address(class="form-control") }}<br>
     </div>
-    <div class="">
+    <div class="form-group">
         {{ form.email.label }}<br>
         {{ form.email(class="form-control") }}<br>
     </div>
-    <div class="">
+    <div class="form-group">
         {{ form.password.label }}<br>
         {{ form.password(class="form-control") }}<br>
     </div>
-    <div class="">
+    <div class="form-group">
         {{ form.password_again.label }}<br>
         {{ form.password_again(class="form-control") }}<br>
     </div>
-    <div class="">
+    <div class="form-group">
         {{ form.submit(type="submit", class="btn btn-primary") }}
     </div>
     {{message}}

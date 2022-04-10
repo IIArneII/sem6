@@ -45,8 +45,10 @@ if __name__ == '__main__':
     P = [math.exp(-l * intervals[i]) - math.exp(-l * intervals[i + 1]) for i in range(len(ni) - 1)]
     ni_ = [i * n for i in P]
 
+    print('Исходные Частоты:', ni)
+
     for i in range(len(ni)):
-        if ni[i] < 5:
+        if ni[i] <= 5:
             for j in range(i + 1, len(ni)):
                 ni[i] += ni[j]
                 ni_[i] += ni[j]
