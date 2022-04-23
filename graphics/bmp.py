@@ -49,6 +49,7 @@ def make_bmp(width=3, height=3):
 
 
 if __name__ == '__main__':
-    with open('f.bmp', 'wb') as f:
-        f.write(make_bmp(10, 13))
-    os.startfile('f.bmp')
+    # with open('f.bmp', 'wb') as f:
+    #     f.write(make_bmp(10, 13))
+    # os.startfile('f.bmp')
+    print('hi')

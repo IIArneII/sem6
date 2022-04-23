@@ -111,21 +111,35 @@ def figure(surface: Surface, f: Figure2, color=(0, 0, 0), coord_transform=True):
 
 def mesh(surface: Surface, m: Mesh, v: np.ndarray, color=(0, 0, 0), coord_transform=True):
     e = m.points.dot(v)
-    d = 150.
+    if coord_transform:
+        e = e * np.array([1, -1, 1, 1]) + np.array(
+            [int(surface.get_width() / 2), int(surface.get_height() / 2), 0, 0])
+        for polygon in m.polygons:
+            for p in range(1, len(polygon)):
+                line(surface, e[polygon[p - 1]], e[polygon[p]], color)
+            if len(polygon) > 2:
+                line(surface, e[polygon[-1]], e[polygon[0]], color)
+    else:
+        for polygon in m.polygons:
+            for p in range(1, len(polygon)):
+                line(surface, e[p - 1], e[p], color)
+            if len(polygon) > 2:
+                line(surface, e[polygon[-1]], e[polygon[0]], color)
+
+
+def mesh_normals(surface: Surface, m: Mesh, v: np.ndarray, color=(0, 0, 0), coord_transform=True):
+    e = m.points.dot(v)
+    n = m.normals.dot(v)
     if coord_transform:
         # e = e * np.array([1, -1, 1, 1]) + np.array(
         #     [int(surface.get_width() / 2), int(surface.get_height() / 2), 0, 0])
-        for polygon in m.polygons:
-            for p in range(1, len(polygon)):
-                start = (e[polygon[p - 1]][0] * d / e[polygon[p - 1]][2] + surface.get_width() / 2, -e[polygon[p - 1]][1] * d / e[polygon[p - 1]][2] + surface.get_height() / 2)
-                stop = (e[polygon[p]][0] * d / e[polygon[p]][2] + surface.get_width() / 2, -e[polygon[p]][1] * d / e[polygon[p]][2] + surface.get_height() / 2)
-                # line(surface, e[polygon[p - 1]], e[polygon[p]], color)
-                line(surface, start, stop, color)
-            if len(polygon) > 2:
-                start = (e[polygon[-1]][0] * d / e[polygon[-1]][2] + surface.get_width() / 2, -e[polygon[-1]][1] * d / e[polygon[-1]][2] + surface.get_height() / 2)
-                stop = (e[polygon[0]][0] * d / e[polygon[0]][2] + surface.get_width() / 2, -e[polygon[0]][1] * d / e[polygon[0]][2] + surface.get_height() / 2)
-                # line(surface, e[polygon[-1]], e[polygon[0]], color)
-                line(surface, start, stop, color)
+        # n = n * np.array([1, -1, 1, 1]) + np.array(
+        #     [int(surface.get_width() / 2), int(surface.get_height() / 2), 0, 0])
+        for i, polygon in enumerate(m.polygons):
+
+            mm = (e[polygon[0]] + e[polygon[1]] + e[polygon[2]]) / 3
+            line(surface, (mm[0] + surface.get_width() / 2, - mm[1] + surface.get_height() / 2),
+                 (), color)
     else:
         for polygon in m.polygons:
             for p in range(1, len(polygon)):

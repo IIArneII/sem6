@@ -21,6 +21,8 @@ if __name__ == '__main__':
     xi = [[rand() for j in range(12)] for i in range(n)]
     zi = [(sum(i) - 6) * 0.25 + 3 for i in xi]
 
+    print(zi)
+
     m_o = sum(zi) / n
     d_o = sum([(i - m_o) ** 2 for i in zi]) / n
 

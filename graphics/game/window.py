@@ -22,10 +22,10 @@ class Window:
         self.setting = False
         self.f = figure2.Figure2([0, 0, 1], [0, 0, 1])
 
-        self.m1 = mesh.Line((0., 0, 0), (1., 0, 0))
-        self.m2 = mesh.Line((0., 0, 0), (0., 1, 0))
-        self.m3 = mesh.Line((0., 0, 0), (0., 0, 1))
-        self.cube = mesh.Cube(2, 2, 2)
+        self.m1 = mesh.Line((0., 0, 0), (50., 0, 0))
+        self.m2 = mesh.Line((0., 0, 0), (0., 50, 0))
+        self.m3 = mesh.Line((0., 0, 0), (0., 0, 50))
+        self.cube = mesh.Cube(200, 200, 200)
         self.v = matrix.v(np.array([3, 3, 3]))
 
     def event_handling(self):
@@ -90,6 +90,7 @@ class Window:
         draw.mesh(self.screen, self.m2, self.v, color=(0, 255, 0))
         draw.mesh(self.screen, self.m3, self.v, color=(0, 0, 255))
         draw.mesh(self.screen, self.cube, self.v)
+        draw.mesh_normals(self.screen, self.cube, self.v)
 
         draw.ellipse(self.screen, (100, 100), 50)
 

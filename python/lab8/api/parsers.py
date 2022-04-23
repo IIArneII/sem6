@@ -1,0 +1,25 @@
+from flask_restful import reqparse
+
+user_post_parser = reqparse.RequestParser()
+user_post_parser.add_argument('name', required=True, type=str)
+user_post_parser.add_argument('surname', required=True, type=str)
+user_post_parser.add_argument('age', required=True, type=int)
+user_post_parser.add_argument('email', required=True, type=str)
+user_post_parser.add_argument('password', required=True, type=str)
+user_post_parser.add_argument('id', required=False, type=int)
+user_post_parser.add_argument('position', required=False, type=str)
+user_post_parser.add_argument('speciality', required=False, type=str)
+user_post_parser.add_argument('address', required=False, type=str)
+user_post_parser.add_argument('modified_date', required=False, type=str)
+
+user_put_parser = reqparse.RequestParser()
+user_put_parser.add_argument('name', required=False, type=str)
+user_put_parser.add_argument('surname', required=False, type=str)
+user_put_parser.add_argument('age', required=False, type=int)
+user_put_parser.add_argument('email', required=False, type=str)
+user_put_parser.add_argument('password', required=False, type=str)
+user_put_parser.add_argument('position', required=False, type=str)
+user_put_parser.add_argument('speciality', required=False, type=str)
+user_put_parser.add_argument('address', required=False, type=str)
+user_put_parser.add_argument('modified_date', required=False, type=str)
+
