@@ -127,19 +127,23 @@ def mesh(surface: Surface, m: Mesh, v: np.ndarray, color=(0, 0, 0), coord_transf
                 line(surface, e[polygon[-1]], e[polygon[0]], color)
 
 
+n_e = np.array([0, 0, 1, 1])
+light = np.array([200, 500, 400, 1])
+
+
 def mesh_normals(surface: Surface, m: Mesh, v: np.ndarray, color=(0, 0, 0), coord_transform=True):
     e = m.points.dot(v)
     n = m.normals.dot(v)
+    nn = m.normals
     if coord_transform:
-        # e = e * np.array([1, -1, 1, 1]) + np.array(
-        #     [int(surface.get_width() / 2), int(surface.get_height() / 2), 0, 0])
-        # n = n * np.array([1, -1, 1, 1]) + np.array(
-        #     [int(surface.get_width() / 2), int(surface.get_height() / 2), 0, 0])
         for i, polygon in enumerate(m.polygons):
-
             mm = (e[polygon[0]] + e[polygon[1]] + e[polygon[2]]) / 3
-            line(surface, (mm[0] + surface.get_width() / 2, - mm[1] + surface.get_height() / 2),
-                 (), color)
+            fi = np.arccos(np.sum(n_e * nn[i]))
+            if -np.pi / 2 < fi < np.pi / 2:
+                te = np.arccos(np.sum((light - mm) * n[i]))
+                line(surface, (mm[0] + surface.get_width() / 2, - mm[1] + surface.get_height() / 2),
+                     (mm[0] + surface.get_width() / 2 + n[i][0] * 20, - mm[1] + surface.get_height() / 2 - n[i][1] * 20),
+                     color)
     else:
         for polygon in m.polygons:
             for p in range(1, len(polygon)):

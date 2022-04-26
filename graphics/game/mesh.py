@@ -48,8 +48,13 @@ class Cube(Mesh):
                                   [0, 5, 4], [0, 5, 1],
                                   [2, 7, 6], [2, 7, 3]])
         self.normals = []
-        for i in self.polygons:
-            s = np.cross(self.points[i[0]][:3] - self.points[i[1]][:3], self.points[i[0]][:3] - self.points[i[2]][:3])
+        for k, i in enumerate(self.polygons):
+            if k % 2 == 0:
+                s = np.cross(self.points[i[0]][:3] - self.points[i[1]][:3],
+                             self.points[i[0]][:3] - self.points[i[2]][:3])
+            else:
+                s = np.cross(self.points[i[0]][:3] - self.points[i[1]][:3],
+                             self.points[i[2]][:3] - self.points[i[0]][:3])
             self.normals.append(s / np.linalg.norm(s))
         self.normals = np.array(self.normals)
         self.normals = np.c_[self.normals, np.ones(len(self.normals))]
