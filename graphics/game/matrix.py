@@ -82,6 +82,11 @@ def scaling_3(point: ndarray, x: float, y: float, z: float):
     return point.dot(s1.dot(s).dot(s2))
 
 
+def scaling_3_point(point: ndarray, x: float, y:float, z: float):
+    s = np.array([[x, 0., 0, 0], [0, y, 0, 0], [0, 0, z, 0], [0, 0, 0, 1]])
+    return point.dot(s)
+
+
 def shift_3(p: ndarray, x: float, y: float, z: float):
     return p.dot(np.array([[1., 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [x, y, z, 1]]))
 

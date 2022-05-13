@@ -3,6 +3,9 @@ from figure2 import Figure2
 from mesh import Mesh
 from pygame import Surface
 import numpy as np
+from numba import njit
+import pygame
+import time
 
 
 def axes(surface: Surface, color):
@@ -127,26 +130,69 @@ def mesh(surface: Surface, m: Mesh, v: np.ndarray, color=(0, 0, 0), coord_transf
                 line(surface, e[polygon[-1]], e[polygon[0]], color)
 
 
-n_e = np.array([0, 0, 1, 1])
-light = np.array([200, 500, 400, 1])
-
-
-def mesh_normals(surface: Surface, m: Mesh, v: np.ndarray, color=(0, 0, 0), coord_transform=True):
-    e = m.points.dot(v)
-    n = m.normals.dot(v)
-    nn = m.normals
-    if coord_transform:
-        for i, polygon in enumerate(m.polygons):
-            mm = (e[polygon[0]] + e[polygon[1]] + e[polygon[2]]) / 3
-            fi = np.arccos(np.sum(n_e * nn[i]))
-            if -np.pi / 2 < fi < np.pi / 2:
-                te = np.arccos(np.sum((light - mm) * n[i]))
-                line(surface, (mm[0] + surface.get_width() / 2, - mm[1] + surface.get_height() / 2),
-                     (mm[0] + surface.get_width() / 2 + n[i][0] * 20, - mm[1] + surface.get_height() / 2 - n[i][1] * 20),
-                     color)
+@njit(fastmath=True)
+def ok(e, polygon, x, y):
+    s1 = (e[polygon[0]][0] - x) * (e[polygon[1]][1] - e[polygon[0]][1]) - (
+            e[polygon[1]][0] - e[polygon[0]][0]) * (e[polygon[0]][1] - y)
+    s2 = (e[polygon[1]][0] - x) * (e[polygon[2]][1] - e[polygon[1]][1]) - (
+            e[polygon[2]][0] - e[polygon[1]][0]) * (e[polygon[1]][1] - y)
+    s3 = (e[polygon[2]][0] - x) * (e[polygon[0]][1] - e[polygon[2]][1]) - (
+            e[polygon[0]][0] - e[polygon[2]][0]) * (e[polygon[2]][1] - y)
+    if (s1 < 0 and s2 < 0 and s3 < 0) or (s1 > 0 and s2 > 0 and s3 > 0):
+        return True
     else:
-        for polygon in m.polygons:
-            for p in range(1, len(polygon)):
-                line(surface, e[p - 1], e[p], color)
-            if len(polygon) > 2:
-                line(surface, e[polygon[-1]], e[polygon[0]], color)
+        return False
+
+
+@njit()
+def zz(p1, p2, p3, x, y):
+    return -(p1[0]*p3[1]*p1[2]-p2[0]*p3[1]*p1[2]-p3[1]*p1[2]-p1[0]*p2[1]*p1[2]+p3[0]*p2[1]*p1[2]+p2[1]*p1[2]+p1[0]*p1[1]*p2[2]-p3[0]*p1[1]*p2[2]-p1[1]*p2[2]+p3[1]*p2[2]-p1[0]*p1[1]*p3[2]+p2[0]*p1[1]*p3[2]+p1[1]*p3[2]-p2[1]*p3[2]+p3[1]*p1[2]*x-p2[1]*p1[2]*x+p1[1]*p2[2]*x-p3[1]*p2[2]*x-p1[1]*p3[2]*x+p2[1]*p3[2]*x+p2[0]*p1[2]*y-p3[0]*p1[2]*y-p1[0]*p2[2]*y+p3[0]*p2[2]*y+p1[0]*p3[2]*y-p2[0]*p3[2]*y)/(-p2[0]*p1[1]+p3[0]*p1[1]-p1[0]*p3[1]+p2[0]*p3[1]+p1[0]*p2[1]-p3[0]*p2[1])
+
+
+@njit()
+def Il(p1, p2, p3, x, y, fi, nn, light, Ia, Ks, Kd, P):
+    z = zz(p1, p2, p3, x, y)
+    M = np.array([x, y, z])
+    ML = light - M
+    teta = np.arccos(np.sum(ML * nn) / np.linalg.norm(ML))
+    if -np.pi / 2 <= teta <= np.pi / 2:
+        al = fi - teta
+        return Ia * Ks * np.cos(al) ** P * Kd * np.cos(teta)
+    return 0
+
+
+@njit(fastmath=True)
+def render(e, nn, polygons, mon, light, Ia, Ks, Kd, P):
+    mon[:] = np.array([0, 0, 0])
+    for i, polygon in enumerate(polygons):
+        fi = np.arccos(np.sum(n_e * nn[i]))
+        if -np.pi / 2 <= fi <= np.pi / 2:
+            xx = [int(e[polygon[0]][0]), int(e[polygon[1]][0]), int(e[polygon[2]][0])]
+            yy = [int(e[polygon[0]][1]), int(e[polygon[1]][1]), int(e[polygon[2]][1])]
+            for x in range(min(xx), max(xx)):
+                for y in range(min(yy), max(yy)):
+                    if ok(e, polygon, x, y):
+                        I = Il(e[polygon[0]], e[polygon[1]], e[polygon[2]], x, y, fi, nn[i], light, Ia, Ks, Kd, P)
+                        mon[x + 250][y + 250][0] = I
+                        mon[x + 250][y + 250][1] = I
+                        mon[x + 250][y + 250][2] = I
+    return mon
+
+
+n_e = np.array([-1, -1, -1]) / np.sqrt(3)
+light = np.array([300, 300, 0, 1])
+Ia = 255
+Ks = 0.8
+Kd = 0.8
+P = 2
+
+
+def mesh_normals(surface: Surface, m: Mesh, v: np.ndarray, color=(0, 0, 0)):
+    e = m.points.dot(v)
+    light_v = light.dot(v)
+    nn = m.normals_s
+    mon = np.full((surface.get_width(), surface.get_height(), 3), (0, 0, 0))
+    mon = render(e, nn, m.polygons, mon, light_v[:3], Ia, Ks, Kd, P)
+    pygame.surfarray.blit_array(surface, mon)
+    # surface.set_at((int(x + surface.get_width() / 2), int(-y + surface.get_height() / 2)),
+    #                (I, I, I))

@@ -26,7 +26,7 @@ class Window:
         self.m2 = mesh.Line((0., 0, 0), (0., 50, 0))
         self.m3 = mesh.Line((0., 0, 0), (0., 0, 50))
         self.cube = mesh.Cube(200, 200, 200)
-        self.v = matrix.v(np.array([3, 3, 3]))
+        self.v = matrix.v(np.array([500, 500, 500]))
 
     def event_handling(self):
         for e in pygame.event.get():
@@ -52,25 +52,46 @@ class Window:
                     self.f.points = matrix.reflect_2x(self.f.points)
 
         if pygame.key.get_pressed()[pygame.K_RIGHT]:
-            self.f.rotation(-1)
-            self.cube.rotation(0.2, 0, 0)
+            self.cube.rotation(1, 0, 0)
         if pygame.key.get_pressed()[pygame.K_LEFT]:
-            self.f.rotation(1)
-            self.cube.rotation(0, 0.2, 0)
+            self.cube.rotation(0, 1, 0)
         if pygame.key.get_pressed()[pygame.K_UP]:
-            self.f.scaling(1.1, 1.1)
-            self.cube.rotation(0, 0, 0.2)
-        if pygame.key.get_pressed()[pygame.K_DOWN]:
-            self.f.scaling(0.9, 0.9)
-        if pygame.key.get_pressed()[pygame.K_w]:
-            # self.f.shift(0, 1)
-            self.v = matrix.shift_3(self.v, 0.1, 0, 0)
-        if pygame.key.get_pressed()[pygame.K_s]:
-            self.f.shift(0, -1)
+            self.cube.rotation(0, 0, 1)
         if pygame.key.get_pressed()[pygame.K_d]:
-            self.f.shift(1, 0)
+            draw.light = matrix.rotation_3x(np.array([draw.light[0], draw.light[1], draw.light[2], 1]), 1)
+            self.info()
+        if pygame.key.get_pressed()[pygame.K_w]:
+            draw.light = matrix.rotation_3z(np.array([draw.light[0], draw.light[1], draw.light[2], 1]), 1)
+            self.info()
         if pygame.key.get_pressed()[pygame.K_a]:
-            self.f.shift(-1, 0)
+            draw.light = matrix.rotation_3y(np.array([draw.light[0], draw.light[1], draw.light[2], 1]), 1)
+            self.info()
+        if pygame.key.get_pressed()[pygame.K_z]:
+            draw.light = matrix.scaling_3_point(draw.light, 0.8, 0.8, 0.8)
+            self.info()
+        if pygame.key.get_pressed()[pygame.K_x]:
+            draw.light = matrix.scaling_3_point(draw.light, 1.2, 1.2, 1.2)
+            self.info()
+        if pygame.key.get_pressed()[pygame.K_r]:
+            draw.Ia += 1
+        if pygame.key.get_pressed()[pygame.K_f]:
+            draw.Ia -= 1
+        if pygame.key.get_pressed()[pygame.K_t]:
+            draw.Ks += 0.05
+        if pygame.key.get_pressed()[pygame.K_g]:
+            draw.Ks -= 0.05
+        if pygame.key.get_pressed()[pygame.K_y]:
+            draw.Kd += 0.05
+        if pygame.key.get_pressed()[pygame.K_h]:
+            draw.Kd -= 0.05
+        if pygame.key.get_pressed()[pygame.K_u]:
+            draw.P += 0.5
+        if pygame.key.get_pressed()[pygame.K_j]:
+            draw.P -= 0.5
+
+    def info(self):
+        print('\r' * 10, end='')
+        print('%15s  %15s  %15s  %15s' % (draw.light[0], draw.light[1], draw.light[2], np.linalg.norm(draw.light)), end='')
 
     def update(self):
         pass
@@ -86,14 +107,11 @@ class Window:
         # draw.line(self.screen, (p2[0][0], p2[0][1]), (p2[1][0], p2[1][1]))
         # draw.line(self.screen, (p3[0][0], p3[0][1]), (p3[1][0], p3[1][1]))
 
-        draw.mesh(self.screen, self.m1, self.v, color=(255, 0, 0))
-        draw.mesh(self.screen, self.m2, self.v, color=(0, 255, 0))
-        draw.mesh(self.screen, self.m3, self.v, color=(0, 0, 255))
-        draw.mesh(self.screen, self.cube, self.v)
+        # draw.mesh(self.screen, self.m1, self.v, color=(255, 0, 0))
+        # draw.mesh(self.screen, self.m2, self.v, color=(0, 255, 0))
+        # draw.mesh(self.screen, self.m3, self.v, color=(0, 0, 255))
+        # draw.mesh(self.screen, self.cube, self.v)
         draw.mesh_normals(self.screen, self.cube, self.v)
-
-        draw.ellipse(self.screen, (100, 100), 50)
-
 
         # draw.figure(self.screen, self.f)
 
