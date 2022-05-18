@@ -12,7 +12,7 @@ class Mesh:
     def rotation(self, angle_x: float, angle_y: float, angle_z: float):
         self.points = rotation_3(self.points, angle_x, angle_y, angle_z)
         self.normals = rotation_3(self.normals, angle_x, angle_y, angle_z)
-        self.normals_s = self.normals[:,: -1]
+        self.normals_s = self.normals[:, : -1]
 
     def scaling(self, x: float, y: float, z: float):
         self.points = scaling_3(self.points, x, y, z)
@@ -50,10 +50,10 @@ class Cube(Mesh):
                                   [0, 5, 4], [0, 5, 1],
                                   [2, 7, 6], [2, 7, 3]])
         self.normals_s = [[0, 0, -1], [0, 0, -1],
-                        [1, 0, 0], [1, 0, 0],
-                        [0, 0, 1], [0, 0, 1],
-                        [-1, 0, 0], [-1, 0, 0],
-                        [0, -1, 0], [0, -1, 0],
-                        [0, 1, 0], [0, 1, 0]]
+                          [1, 0, 0], [1, 0, 0],
+                          [0, 0, 1], [0, 0, 1],
+                          [-1, 0, 0], [-1, 0, 0],
+                          [0, -1, 0], [0, -1, 0],
+                          [0, 1, 0], [0, 1, 0]]
         self.normals_s = np.array(self.normals_s)
         self.normals = np.c_[self.normals_s, np.ones(len(self.normals_s))]

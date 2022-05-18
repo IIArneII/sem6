@@ -1,5 +1,6 @@
 import random as rand
 from matplotlib import pyplot as plt
+from scipy.stats import poisson
 
 if __name__ == '__main__':
     lambd = 8 / 24
@@ -12,11 +13,10 @@ if __name__ == '__main__':
 
     plt.plot([0, t], [0, 0], 'b')
     for i in range(t):
-        if rand.random() > lambd:
-            continue
-        plt.plot([i], [0], 'or')
-        train += 1
-        cart += round(rand.normalvariate(m, sigma))
+        for j in range(poisson.rvs(mu=lambd)):
+            train += 1
+            cart += round(rand.normalvariate(m, sigma))
+            plt.bar([i], [j + 1])
 
     print(f'Прибыло {train} поездов за {t} часов')
     print(f'Прибыло {cart} вагонов за {t} часов')
